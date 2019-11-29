@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yangsansui.mapper.UserMapper">
+
+    <!--用户登录 并且获取用户的信息-->
+    <select id="userLogin" parameterType="java.lang.Object" resultType="cn.yangsansui.pojo.User">
+        SELECT * FROM user WHERE username=#{userCode} AND password=#{userPassword}
+    </select>
+
+    <!--查询所有用户信息-->
+    <select id="allUser" parameterType="java.lang.String" resultType="cn.yangsansui.pojo.User">
+        SELECT * FROM user
+        <where>
+            <if test="userName!=null">
+                AND username LIKE CONCAT ('%',#{userName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--新增新的用户信息-->
+    <insert id="addUser" parameterType="cn.yangsansui.pojo.User">
+        INSERT INTO user(`username`, real_name, `password`, `gender`, `birthday`, `user_type`)
+        VALUES (#{username},#{realName},#{password},#{gender},#{birthday},#{userType})
+    </insert>
+
+    <!--根据用户的编号查询用户的信息-->
+    <select id="userById" parameterType="java.lang.Integer" resultType="cn.yangsansui.pojo.User">
+        SELECT * FROM user WHERE id=#{id}
+    </select>
+
+    <!--修改用户信息-->
+    <update id="updateUser" parameterType="cn.yangsansui.pojo.User">
+        UPDATE user SET real_name=#{realName},gender=#{gender},
+        birthday=#{birthday},user_type=#{userType} WHERE id=#{id}
+    </update>
+
+    <!--删除用户信息-->
+    <delete id="delUser" parameterType="java.lang.Integer">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+
+    <!--修改用户密码-->
+    <update id="updatePassWord" parameterType="java.lang.Object">
+        UPDATE user SET password=#{newPassWord} WHERE id=#{id}
+    </update>
+</mapper>

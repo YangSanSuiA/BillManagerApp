@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yangsansui.mapper.ProviderMapper">
+
+    <!--查询所有供应商信息-->
+    <select id="providerList" resultType="cn.yangsansui.pojo.Provider">
+        SELECT * FROM provider
+    </select>
+
+    <!--根据供应商的名称模糊查询-->
+    <select id="providerListByName" parameterType="java.lang.String" resultType="cn.yangsansui.pojo.Provider">
+        SELECT * FROM provider
+        <where>
+            <if test="providerName!=null">
+                AND providerName LIKE CONCAT ('%',#{providerName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--修改供应商信息-->
+    <update id="updateProvider" parameterType="cn.yangsansui.pojo.Provider">
+        UPDATE provider SET providerName=#{providerName},
+        people=#{people},phone=#{phone},address=#{address},fax=#{fax},`describe`=#{describe},
+        `create_date`=#{createDate} WHERE pid=#{pid}
+    </update>
+
+    <!--根据供应商的编号查询供应商信息-->
+    <select id="providerListById" parameterType="java.lang.Integer" resultType="cn.yangsansui.pojo.Provider">
+        SELECT * FROM provider WHERE pid=#{pid}
+    </select>
+
+    <!--新增供应商信息-->
+    <insert id="addProvider" parameterType="cn.yangsansui.pojo.Provider">
+        INSERT INTO provider(providerName, people, phone, address, fax, `describe`, create_date)
+        VALUES(#{providerName},#{people},#{phone},#{address},#{fax},#{describe},#{createDate})
+    </insert>
+
+    <!--删除供应商信息-->
+    <delete id="delProvider" parameterType="java.lang.Integer">
+        DELETE FROM provider WHERE pid=#{pid}
+    </delete>
+</mapper>
